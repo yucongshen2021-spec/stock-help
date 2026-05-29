@@ -39,17 +39,32 @@ def _record(name: str, status: str, detail: str) -> None:
     results.append(Result(name=name, status=status, detail=detail))
 
 
+def _snippet(body: bytes, limit: int = 400) -> str:
+    try:
+        text = body.decode("utf-8", errors="replace")
+    except Exception:
+        text = repr(body[:limit])
+    text = text.replace("\n", " ").strip()
+    return text[:limit]
+
+
 def _get(name: str, url: str, predicate: Callable[[int, bytes], bool], timeout: int = DEFAULT_TIMEOUT) -> Optional[tuple[int, bytes]]:
     try:
         with urllib.request.urlopen(url, timeout=timeout) as r:
             body = r.read()
             ok = predicate(r.status, body)
-            _record(name, "PASS" if ok else "FAIL", f"HTTP {r.status}, len={len(body)}")
+            detail = f"HTTP {r.status}, len={len(body)}"
+            if not ok:
+                detail += f" | body={_snippet(body)}"
+            _record(name, "PASS" if ok else "FAIL", detail)
             return r.status, body
     except urllib.error.HTTPError as e:
         body = e.read() if hasattr(e, "read") else b""
         ok = predicate(e.code, body)
-        _record(name, "PASS" if ok else "FAIL", f"HTTP {e.code}")
+        detail = f"HTTP {e.code}"
+        if not ok:
+            detail += f" | body={_snippet(body)}"
+        _record(name, "PASS" if ok else "FAIL", detail)
     except Exception as e:
         _record(name, "FAIL", f"{type(e).__name__}: {e}")
     return None
@@ -66,11 +81,17 @@ def _post(name: str, url: str, body: str, predicate: Callable[[int, bytes], bool
         with urllib.request.urlopen(req, timeout=timeout) as r:
             content = r.read()
             ok = predicate(r.status, content)
-            _record(name, "PASS" if ok else "FAIL", f"HTTP {r.status}, len={len(content)}")
+            detail = f"HTTP {r.status}, len={len(content)}"
+            if not ok:
+                detail += f" | body={_snippet(content)}"
+            _record(name, "PASS" if ok else "FAIL", detail)
     except urllib.error.HTTPError as e:
         content = e.read() if hasattr(e, "read") else b""
         ok = predicate(e.code, content)
-        _record(name, "PASS" if ok else "FAIL", f"HTTP {e.code}")
+        detail = f"HTTP {e.code}"
+        if not ok:
+            detail += f" | body={_snippet(content)}"
+        _record(name, "PASS" if ok else "FAIL", detail)
     except Exception as e:
         _record(name, "FAIL", f"{type(e).__name__}: {e}")
 
