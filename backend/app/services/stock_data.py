@@ -16,7 +16,10 @@
 """
 
 import logging
+import os
 import re
+import sys
+from pathlib import Path
 
 import akshare as ak
 import pandas as pd
@@ -29,11 +32,40 @@ logger = logging.getLogger(__name__)
 _STOCK_LIST_CACHE: pd.DataFrame | None = None
 
 
+def _stock_list_path() -> Path:
+    """A 股股票列表静态文件的真实路径。
+
+    - PyInstaller 打包后，资源被解压到 sys._MEIPASS/app/data/stock_list.csv
+    - 直接运行源码时，路径是 backend/app/data/stock_list.csv
+    """
+    if getattr(sys, "frozen", False) and hasattr(sys, "_MEIPASS"):
+        return Path(sys._MEIPASS) / "app" / "data" / "stock_list.csv"
+    return Path(__file__).resolve().parent.parent / "data" / "stock_list.csv"
+
+
 def _get_stock_list() -> pd.DataFrame:
-    """Lazy-cached A-share stock list (akshare CDN file)."""
+    """加载 A 股全市场代码/名称列表。
+
+    数据源是随程序一起发布的静态 CSV（由 scripts/dump_stock_list.py 离线生成）。
+    不在运行时访问外部数据源，避免客户网络或 CI 环境 IP 被屏蔽时搜索完全失效。
+    """
     global _STOCK_LIST_CACHE
-    if _STOCK_LIST_CACHE is None:
-        _STOCK_LIST_CACHE = ak.stock_info_a_code_name()
+    if _STOCK_LIST_CACHE is not None:
+        return _STOCK_LIST_CACHE
+
+    path = _stock_list_path()
+    if not path.is_file():
+        raise RuntimeError(
+            f"未找到股票列表静态文件: {path}。"
+            f"请在源码目录执行 `python scripts/dump_stock_list.py` 生成后再重新打包。"
+        )
+
+    df = pd.read_csv(path, dtype={"code": str, "name": str}, encoding="utf-8")
+    if df.empty or not {"code", "name"}.issubset(df.columns):
+        raise RuntimeError(f"股票列表静态文件格式不正确: {path}")
+
+    _STOCK_LIST_CACHE = df
+    logger.info("loaded stock list from %s (rows=%d)", path, len(df))
     return _STOCK_LIST_CACHE
 
 

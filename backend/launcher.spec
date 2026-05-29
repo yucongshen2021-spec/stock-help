@@ -17,6 +17,7 @@ a = Analysis(
     binaries=[],
     datas=[
         ("app/prompts", "app/prompts"),
+        ("app/data", "app/data"),
         (str(frontend_dist), "frontend_dist"),
         (str(akshare_file_fold), "akshare/file_fold"),
     ],
