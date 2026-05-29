@@ -1,0 +1,42 @@
+﻿股票AI助手 - EXE一键版（给小白用户）
+
+使用方法：
+1. 双击"股票AI助手.exe"
+2. 稍等几秒，会自动打开浏览器
+3. 浏览器地址：http://127.0.0.1:3001
+
+注意：
+- 首次运行如果被系统拦截，请点"更多信息" -> "仍要运行"。
+- 程序在后台运行，无可见窗口；关闭请在任务管理器中结束 "股票AI助手.exe"。
+- 程序启动时若 3001 端口被占用，会自动 kill 占用进程后再启动。
+- 需要联网（用于股票数据和AI接口）。
+
+配置文件 .env（与 exe 同目录）：
+
+    DEEPSEEK_API_KEY=你的DeepSeek_API_Key
+    DEEPSEEK_BASE_URL=https://api.deepseek.com
+    DEEPSEEK_MODEL=deepseek-v4-flash
+    FLASK_PORT=3001
+
+第一次使用必须把 DEEPSEEK_API_KEY 改成自己的密钥。
+.env 文件请保存为 UTF-8 编码。
+
+聊天 / AI 配置只能在 .env 中修改，网页已不再提供"设置"页面，
+以避免凭据写入浏览器。
+
+行情数据源（按顺序自动轮换，前一个失败时切换下一个）：
+1. 东方财富  push2.eastmoney.com
+2. 新浪财经  hq.sinajs.cn
+3. 腾讯财经  qt.gtimg.cn
+4. 雪球      stock.xueqiu.com
+5. AKShare   (备用)
+
+页面上的行情卡片会在 "source" 字段显示当前数据来自哪一个源。
+
+启动失败排查：
+- 看同目录下的 startup.log
+- 确认 .env 是 UTF-8 编码且 DEEPSEEK_API_KEY 已填写
+- 确认能访问外网（任何一个国内股票网站能访问即可）
+
+说明：
+- exe 已内置前端页面和后端服务，不需要安装 Python/Node。

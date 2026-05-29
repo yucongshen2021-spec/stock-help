@@ -1,0 +1,156 @@
+@import "tailwindcss";
+
+/* ===== GPT Dark Theme ===== */
+:root {
+  --bg-main: #1E1E1E;
+  --bg-sidebar: #171717;
+  --bg-surface: rgba(255,255,255,0.02);
+  --bg-surface-hover: rgba(255,255,255,0.04);
+  --bg-surface-active: rgba(255,255,255,0.07);
+  --bg-card: rgba(255,255,255,0.025);
+  --bg-card-hover: rgba(255,255,255,0.04);
+  --bg-input: rgba(255,255,255,0.04);
+  --bg-send-btn: rgba(255,255,255,0.08);
+  --bg-send-btn-hover: rgba(255,255,255,0.12);
+  --bg-user-bubble: rgba(255,255,255,0.04);
+  --bg-icon: rgba(255,255,255,0.06);
+  --bg-modal: #252525;
+  --bg-dropdown: #252525;
+  --bg-code: rgba(0,0,0,0.3);
+
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255,255,255,0.65);
+  --text-tertiary: rgba(255,255,255,0.45);
+  --text-muted: rgba(255,255,255,0.30);
+  --text-inverse: #000000;
+
+  --border-subtle: rgba(255,255,255,0.03);
+  --border-card: rgba(255,255,255,0.04);
+  --border-input: rgba(255,255,255,0.06);
+  --border-btn: rgba(255,255,255,0.08);
+
+  --color-up: #ef5350;
+  --color-down: #26a69a;
+  --color-link: #2997ff;
+
+  --shadow-modal: 0 16px 64px rgba(0,0,0,0.6);
+  --shadow-dropdown: 0 8px 32px rgba(0,0,0,0.5);
+  --shadow-input: 0 2px 12px rgba(0,0,0,0.14);
+
+  --chart-axis-line: rgba(255,255,255,0.05);
+  --chart-split-line: rgba(255,255,255,0.03);
+  --chart-label: #6e6e6e;
+  --chart-tooltip-bg: #252525;
+  --chart-tooltip-border: rgba(255,255,255,0.08);
+  --chart-tooltip-text: #ececec;
+
+  --spacing-xs: 8px;
+  --spacing-sm: 12px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+/* ===== GPT Light Theme ===== */
+.light {
+  --bg-main: #FFFFFF;
+  --bg-sidebar: #F5F5F7;
+  --bg-surface: rgba(0,0,0,0.02);
+  --bg-surface-hover: rgba(0,0,0,0.04);
+  --bg-surface-active: rgba(0,0,0,0.07);
+  --bg-card: rgba(0,0,0,0.02);
+  --bg-card-hover: rgba(0,0,0,0.04);
+  --bg-input: rgba(0,0,0,0.03);
+  --bg-send-btn: rgba(0,0,0,0.08);
+  --bg-send-btn-hover: rgba(0,0,0,0.12);
+  --bg-user-bubble: rgba(0,0,0,0.04);
+  --bg-icon: rgba(0,0,0,0.06);
+  --bg-modal: #F0F0F5;
+  --bg-dropdown: #F0F0F5;
+  --bg-code: rgba(0,0,0,0.03);
+
+  --text-primary: #1D1D1F;
+  --text-secondary: rgba(0,0,0,0.55);
+  --text-tertiary: rgba(0,0,0,0.40);
+  --text-muted: rgba(0,0,0,0.25);
+  --text-inverse: #FFFFFF;
+
+  --border-subtle: rgba(0,0,0,0.04);
+  --border-card: rgba(0,0,0,0.06);
+  --border-input: rgba(0,0,0,0.08);
+  --border-btn: rgba(0,0,0,0.10);
+
+  --color-up: #ef5350;
+  --color-down: #26a69a;
+  --color-link: #0066cc;
+
+  --shadow-modal: 0 16px 64px rgba(0,0,0,0.15);
+  --shadow-dropdown: 0 8px 32px rgba(0,0,0,0.10);
+  --shadow-input: 0 2px 12px rgba(0,0,0,0.06);
+
+  --chart-axis-line: rgba(0,0,0,0.06);
+  --chart-split-line: rgba(0,0,0,0.04);
+  --chart-label: #8e8e8e;
+  --chart-tooltip-bg: #ffffff;
+  --chart-tooltip-border: rgba(0,0,0,0.10);
+  --chart-tooltip-text: #1d1d1f;
+}
+
+.light body::before { opacity: 0; }
+
+@theme {
+  --color-gpt-bg: var(--bg-main);
+  --color-gpt-sidebar: var(--bg-sidebar);
+  --color-gpt-surface: var(--bg-surface);
+  --color-gpt-text: var(--text-primary);
+  --color-gpt-text-secondary: var(--text-secondary);
+  --color-gpt-text-tertiary: var(--text-tertiary);
+  --color-gpt-text-muted: var(--text-muted);
+  --font-sans: var(--font-sans);
+}
+
+.text-up { color: var(--color-up); }
+.text-down { color: var(--color-down); }
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root {
+  height: 100%;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  color: var(--text-primary);
+  background: var(--bg-main);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* GPT gradient background (dark only) */
+body {
+  background: linear-gradient(180deg, #1E1E1E 0%, #1A1A1C 100%);
+  background-attachment: fixed;
+}
+.light body { background: var(--bg-main); }
+
+/* Subtle noise overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+}
+
+#root { position: relative; z-index: 1; }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--bg-surface-hover); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--bg-surface-active); }
+
+::selection { background: var(--bg-surface-active); color: var(--text-primary); }
+*:focus-visible { outline: 2px solid var(--color-link); outline-offset: 2px; }
+::placeholder { color: var(--text-muted); }

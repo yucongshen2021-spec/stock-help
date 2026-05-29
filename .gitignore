@@ -1,0 +1,52 @@
+# ===== Secrets =====
+# 排除所有真实 .env（保留 .env.example 模板）
+.env
+**/.env
+!**/.env.example
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+env/
+
+# ===== Node / Frontend =====
+node_modules/
+frontend/dist/
+frontend/tsconfig.tsbuildinfo
+*.log
+
+# ===== PyInstaller 产物 =====
+backend/build/
+backend/dist/
+*.exe
+*.spec.bak
+
+# ===== 运行时日志 =====
+runtime/*.log
+**/startup.log
+
+# ===== 客户交付包（含真实 key 与 exe，不入库）=====
+release/.env
+release/*.exe
+release/startup.log
+
+# ===== IDE / 本地配置 =====
+.claude/settings.local.json
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ===== 操作系统 =====
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
